@@ -50,7 +50,8 @@ public class BWT {
 			}
 			rawStrings[i] = this.LStrings[index];
 		}
-		String rawStr = String.join("", rawStrings);
+		String reverseStr = String.join("", rawStrings).substring(0, length - 1);
+		String rawStr = new StringBuffer(reverseStr).reverse().toString();
 		return rawStr;
 	}
 	
@@ -169,13 +170,44 @@ public class BWT {
 		System.out.println(Arrays.toString(bStrings));
 	}
 	
-	public static void main(String args[]) {
+	private static void checkEncode() {
+		String inputFileName = "/home/qiujiawei/eclipse-workspace/BWT/in.txt";
+		String outputFileName = "/home/qiujiawei/eclipse-workspace/BWT/out.txt";
+		boolean isNextWriter = false;
 		BWT bwt = new BWT();
-		String BWTString = bwt.encode("abaaba$");
-		System.out.println(BWTString);
-//		String rawStr = bwt.decode(BWTString);
-		int count = bwt.search("aba", BWTString);
-		System.out.println(count);
+		IO io = new IO();
+		List<String> inputList = io.readTxtFile(inputFileName);
+		for(int i = 0; i < inputList.size(); i++) {
+			if(i == 1) isNextWriter = true;
+			String bwtString = bwt.encode(inputList.get(i) + "&");
+			io.writeTxtFile(bwtString, outputFileName, isNextWriter);
+		}
+	}
+	
+	private static void checkDecode() {
+		String outputFileName = "/home/qiujiawei/eclipse-workspace/BWT/out.txt";
+		String checkFileName = "/home/qiujiawei/eclipse-workspace/BWT/check.txt";
+		boolean isNextWriter = false;
+		BWT bwt = new BWT();
+		IO io = new IO();
+		List<String> BWTList = io.readTxtFile(outputFileName);
+//		System.out.println(BWTList.toString());
+		for(int i = 0; i < BWTList.size(); i++) {
+			if (i == 1) isNextWriter = true;
+			String decodeString = bwt.decode(BWTList.get(i));
+			io.writeTxtFile(decodeString, checkFileName, isNextWriter);
+		}
+	}
+	
+	public static void main(String args[]) {
+		checkEncode();
+		checkDecode();
+		
+//		String BWTString = bwt.encode("abaaba$");
+//		System.out.println(BWTString);
+////		String rawStr = bwt.decode(BWTString);
+//		int count = bwt.search("aba", BWTString);
+//		System.out.println(count);
 		
 	}
 }
