@@ -170,9 +170,7 @@ public class BWT {
 		System.out.println(Arrays.toString(bStrings));
 	}
 	
-	private static void checkEncode() {
-		String inputFileName = "/home/qiujiawei/eclipse-workspace/BWT/in.txt";
-		String outputFileName = "/home/qiujiawei/eclipse-workspace/BWT/out.txt";
+	private static void checkEncode(String inputFileName, String outputFileName) {
 		boolean isNextWriter = false;
 		BWT bwt = new BWT();
 		IO io = new IO();
@@ -184,9 +182,7 @@ public class BWT {
 		}
 	}
 	
-	private static void checkDecode() {
-		String outputFileName = "/home/qiujiawei/eclipse-workspace/BWT/out.txt";
-		String checkFileName = "/home/qiujiawei/eclipse-workspace/BWT/check.txt";
+	private static void checkDecode(String outputFileName, String checkFileName) {
 		boolean isNextWriter = false;
 		BWT bwt = new BWT();
 		IO io = new IO();
@@ -199,10 +195,25 @@ public class BWT {
 		}
 	}
 	
+	private static void checkSearch(String outputFileName, String checkString) {
+		BWT bwt = new BWT();
+		IO io = new IO();
+		int count = 0;
+		List<String> BWTList = io.readTxtFile(outputFileName);
+		for(int i = 0; i < BWTList.size(); i++) {
+			count += bwt.search(checkString, BWTList.get(i));
+		}
+		System.out.println(count);
+	}
+	
 	public static void main(String args[]) {
-		checkEncode();
-		checkDecode();
-		
+		String inputFileName = "/home/qiujiawei/eclipse-workspace/BWT/in.txt";
+		String outputFileName = "/home/qiujiawei/eclipse-workspace/BWT/out.txt";
+		String checkFileName = "/home/qiujiawei/eclipse-workspace/BWT/check.txt";
+		String checkString = "touch";
+		checkEncode(inputFileName, outputFileName);
+		checkDecode(inputFileName, checkFileName);
+		checkSearch(outputFileName, checkString);
 //		String BWTString = bwt.encode("abaaba$");
 //		System.out.println(BWTString);
 ////		String rawStr = bwt.decode(BWTString);
